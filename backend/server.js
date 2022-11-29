@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const dbConnect = require("./config/db/dbConnect");
 const userRoutes = require("./route/users/usersRoute");
+const { errorHandler } = require("./middlewares/error/errorHandler");
 
 const app = express();
 //DB
@@ -17,6 +18,9 @@ app.use("/api/users", userRoutes);
 app.get("/", (req, res) => {
   res.json({ msg: "API for blog Application..." });
 });
+
+//err handler
+app.use(errorHandler);
 
 //server
 const PORT = process.env.PORT || 5000;
