@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-
+const bcrypt = require("bcryptjs");
 //create schema
-
 const userSchema = new mongoose.Schema(
   {
     firstName: {
@@ -17,18 +16,22 @@ const userSchema = new mongoose.Schema(
       default:
         "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
     },
-    bio: {
-      type: String,
-    },
     email: {
       type: String,
       required: [true, "Email is required"],
+    },
+    bio: {
+      type: String,
+    },
+    password: {
+      type: String,
+      required: [true, "Hei buddy Password is required"],
     },
     postCount: {
       type: Number,
       default: 0,
     },
-    isBlacked: {
+    isBlocked: {
       type: Boolean,
       default: false,
     },
@@ -48,12 +51,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    isAccountVerified: {
-      type: Boolean,
-      default: false,
-    },
+    isAccountVerified: { type: Boolean, default: false },
     accountVerificationToken: String,
     accountVerificationTokenExpires: Date,
+
     viewedBy: {
       type: [
         {
@@ -62,6 +63,7 @@ const userSchema = new mongoose.Schema(
         },
       ],
     },
+
     followers: {
       type: [
         {
@@ -79,7 +81,7 @@ const userSchema = new mongoose.Schema(
       ],
     },
     passwordChangeAt: Date,
-    passwordResetToken: Date,
+    passwordResetToken: String,
     passwordResetExpires: Date,
 
     active: {
@@ -88,19 +90,25 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
     timestamps: true,
   }
 );
 
-//compile schema into model
+//hash password
+userSchema.pre("save", async function (next) {
+  //hash password
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
 
+//compile schema into model
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- */
