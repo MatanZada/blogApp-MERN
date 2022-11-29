@@ -29,6 +29,7 @@ const loginUserCtrl = expressAsyncHandler(async (req, res) => {
   //Check if password is match
   if (userExist && (await userExist.isPasswordMatched(password))) {
     res.json({
+      _id: userExist?._id,
       firstName: userExist?.firstName,
       lastName: userExist?.lastName,
       email: userExist?.email,
