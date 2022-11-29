@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
 const dbConnect = require("./config/db/dbConnect");
-const { userRegisterCtrl } = require("./controller/users/usersCtrl");
+const userRoutes = require("./route/users/usersRoute");
 
 const app = express();
 //DB
@@ -11,19 +11,8 @@ dbConnect();
 //middleware
 app.use(express.json());
 
-//custom middleware
-const logger = (req, res, next) => {
-  console.log("am a logger");
-  next();
-};
-
-app.use(logger);
-
-//register
-app.post("/api/users/register", userRegisterCtrl);
-
-// //login
-// app.post("/api/users/login");
+//Users Route
+app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.json({ msg: "API for blog Application..." });
