@@ -1,5 +1,6 @@
 const expressAsyncHandler = require("express-async-handler");
 const User = require("../../model/user/User");
+const generateToken = require("../../config/token/generateToken");
 
 //register
 const userRegisterCtrl = expressAsyncHandler(async (req, res) => {
@@ -27,7 +28,14 @@ const loginUserCtrl = expressAsyncHandler(async (req, res) => {
   const userExist = await User.findOne({ email });
   //Check if password is match
   if (userExist && (await userExist.isPasswordMatched(password))) {
-    res.json(userExist);
+    res.json({
+      firstName: userExist?.firstName,
+      lastName: userExist?.lastName,
+      email: userExist?.email,
+      profilePhoto: userExist?.profilePhoto,
+      isAdmin: userExist?.isAdmin,
+      token: generateToken(userExist?._id),
+    });
   } else {
     res.status(401);
     throw new Error("User not found");
