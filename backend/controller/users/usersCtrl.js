@@ -142,7 +142,7 @@ const updateUserPasswordCtrl = expressAsyncHandler(async (req, res) => {
 
 //following
 
-const fetchFollowingUserCtrl = expressAsyncHandler(async (req, res) => {
+const followingUserCtrl = expressAsyncHandler(async (req, res) => {
   //1.Find the user you want to follow and update it's followers field
   //2. Update the login user following field
   const { followId } = req.body;
@@ -178,6 +178,31 @@ const fetchFollowingUserCtrl = expressAsyncHandler(async (req, res) => {
   res.json("You have successfully followed this user");
 });
 
+//unfollow
+const unfollowUserCtrl = expressAsyncHandler(async (req, res) => {
+  const { unFollowId } = req.body;
+  const loginUserId = req.user.id;
+
+  await User.findByIdAndUpdate(
+    unFollowId,
+    {
+      $pull: { followers: loginUserId },
+      isFollowing: false,
+    },
+    { new: true }
+  );
+
+  await User.findByIdAndUpdate(
+    loginUserId,
+    {
+      $pull: { following: unFollowId },
+    },
+    { new: true }
+  );
+
+  res.json("You have successfully unfollowed this user");
+});
+
 module.exports = {
   userRegisterCtrl,
   loginUserCtrl,
@@ -187,5 +212,6 @@ module.exports = {
   userProfileCtrl,
   updateUserProfileCtrl,
   updateUserPasswordCtrl,
-  fetchFollowingUserCtrl,
+  followingUserCtrl,
+  unfollowUserCtrl,
 };
