@@ -1,7 +1,10 @@
 const expressAsyncHandler = require("express-async-handler");
+const sgMail = require("@sendgrid/mail");
 const User = require("../../model/user/User");
 const generateToken = require("../../config/token/generateToken");
 const { validateMongodbId } = require("../../utils/validateMongodbID");
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 //register
 const userRegisterCtrl = expressAsyncHandler(async (req, res) => {
@@ -233,6 +236,23 @@ const unBlockUserCtrl = expressAsyncHandler(async (req, res) => {
   res.json(user);
 });
 
+// Account Verification - Send email
+const generateVerificationTokenCtrl = expressAsyncHandler(async (req, res) => {
+  try {
+    const msg = {
+      to: "matan.zada553@gmail.com", // Change to your recipient
+      from: "matan.zada1@gmail.com", // Change to your verified sender
+      subject: "Sending with SendGrid is Fun",
+      text: "and easy to do anywhere, even with Node.js",
+    };
+    await sgMail.send(msg).then(() => {
+      console.log("Email sent");
+    });
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 module.exports = {
   userRegisterCtrl,
   loginUserCtrl,
@@ -246,4 +266,5 @@ module.exports = {
   unfollowUserCtrl,
   blockUserCtrl,
   unBlockUserCtrl,
+  generateVerificationTokenCtrl,
 };
