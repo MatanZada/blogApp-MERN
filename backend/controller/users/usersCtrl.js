@@ -238,16 +238,28 @@ const unBlockUserCtrl = expressAsyncHandler(async (req, res) => {
 
 // Account Verification - Send email
 const generateVerificationTokenCtrl = expressAsyncHandler(async (req, res) => {
+  const loginUserId = req.user.id;
+
+  const user = await User.findById(loginUserId);
+
   try {
+    //Generate token
+    const verificationToken = await user?.createAccountVerificationToken();
+    console.log(verificationToken);
+    //save the user
+    await user.save();
+    console.log(verificationToken);
+    //build your message
+    const resetURL = `If you were requested to verify your account, verify now within 10 minutes, otherwise ignore this message <a href="http://localhost:3000/verify-account/${verificationToken}">Click to verify your account</a>`;
+
     const msg = {
-      to: "matan.zada553@gmail.com", // Change to your recipient
-      from: "matan.zada1@gmail.com", // Change to your verified sender
-      subject: "Sending with SendGrid is Fun",
-      text: "and easy to do anywhere, even with Node.js",
+      to: user?.email,
+      from: "matan.zada1@gmail.com",
+      subject: "Verify your account",
+      html: resetURL,
     };
-    await sgMail.send(msg).then(() => {
-      console.log("Email sent");
-    });
+    await sgMail.send(msg);
+    res.json(resetURL);
   } catch (error) {
     res.json(error);
   }
