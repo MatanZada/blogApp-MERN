@@ -296,11 +296,26 @@ const forgetPasswordCtrl = expressAsyncHandler(async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
   if (!user) throw new Error("User not found");
-  res.send("forget password success");
+  // res.send("forget password success");
   try {
     const token = await user.createPasswordResetToken();
+    // console.log(token);
     await user.save();
-  } catch (error) {}
+
+    //build your message
+    const resetURL = `If you were requested to reset your password, reset now within 10 minutes, otherwise ignore this message <a href="http://localhost:8080/reset-password/${token}">Click to Reset</a>`;
+    const msg = {
+      to: email,
+      from: "matan.zada1@gmail.com",
+      subject: "Reset Password",
+      html: resetURL,
+    };
+
+    const emailMsg = await sgMail.send(msg);
+    res.json(emailMsg);
+  } catch (error) {
+    res.json(error);
+  }
 });
 
 module.exports = {
