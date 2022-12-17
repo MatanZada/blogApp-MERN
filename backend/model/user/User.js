@@ -136,6 +136,18 @@ userSchema.methods.isPasswordMatched = async function (enteredPassword) {
   //return await bcrypt.compare(enteredPassword, this.password);
 };
 
+//password reset/firget
+userSchema.methods.createPasswordResetToken = async function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  // console.log({ resetToken });
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+  this.passwordResetExpires = Date.now() + 30 * 60 * 1000; //10 minutes
+  return resetToken;
+};
+
 //compile schema into model
 const User = mongoose.model("User", userSchema);
 
