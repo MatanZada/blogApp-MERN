@@ -21,6 +21,7 @@ const {
 const { authMiddleware } = require("../../middlewares/auth/authMiddleware");
 const {
   profilePhotoUpload,
+  profilePhotoResize,
 } = require("../../middlewares/uploads/profilePhotoUpload");
 const userRoutes = express.Router();
 
@@ -35,9 +36,12 @@ userRoutes.post(
   generateVerificationTokenCtrl
 );
 userRoutes.put("/verify-account", accountVerificationCtrl);
+
 userRoutes.put(
   "/profilephoto-upload",
+  authMiddleware,
   profilePhotoUpload.single("image"),
+  profilePhotoResize,
   profilePhotoUploadCtrl
 );
 userRoutes.put("/unfollow", authMiddleware, unfollowUserCtrl);
