@@ -27,12 +27,11 @@ const profilePhotoUpload = multer({
   limits: { fileSize: 1000000 },
 });
 
-//Image resizing
+//Image Resizing
 const profilePhotoResize = async (req, res, next) => {
   //check if there is no file
   if (!req.file) return next();
   req.file.filename = `user-${Date.now()}-${req.file.originalname}`;
-  console.log("resizing ", req.file);
 
   await sharp(req.file.buffer)
     .resize(250, 250)
