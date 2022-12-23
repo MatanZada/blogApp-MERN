@@ -7,25 +7,21 @@ const postSchema = new mongoose.Schema(
       required: [true, "Post title is required"],
       trim: true,
     },
-    //Create by only category
+    //Created by only category
     category: {
       type: String,
-      required: [true, "Post title is required"],
-      default: "All",
+      required: [true, "Post category is required"],
     },
     isLiked: {
       type: Boolean,
-      required: [true, "Post title is required"],
       default: false,
     },
     isDisLiked: {
       type: Boolean,
-      required: [true, "Post title is required"],
       default: false,
     },
     numViews: {
       type: Number,
-      required: [true, "Post title is required"],
       default: 0,
     },
     likes: [
@@ -47,11 +43,10 @@ const postSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, "Please Author is required"],
+      required: [true, "Post description is required"],
     },
     image: {
       type: String,
-      required: [true, "Please Author is required"],
       default:
         "https://cdn.pixabay.com/photo/2022/12/12/12/58/dog-7651002_960_720.jpg",
     },
@@ -63,10 +58,11 @@ const postSchema = new mongoose.Schema(
     toObject: {
       virtuals: true,
     },
-    timeseries: true,
+    timestamps: true,
   }
 );
 
+//compile
 const Post = mongoose.model("Post", postSchema);
 
 module.exports = Post;
