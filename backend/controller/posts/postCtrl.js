@@ -1,5 +1,6 @@
 const expressAsyncHandler = require("express-async-handler");
 const Filter = require("bad-words");
+const fs = require("fs");
 const Post = require("../../model/post/Post");
 const { validateMongodbId } = require("../../utils/validateMongodbID");
 const User = require("../../model/user/User");
@@ -30,12 +31,24 @@ const createPostCtrl = expressAsyncHandler(async (req, res) => {
   res.json(imgUploaded);
 
   try {
-    const post = await Post.create({
-      ...req.body,
-      image: imgUploaded?.url,
-      user: _id,
-    });
-    res.json(post);
+    // const post = await Post.create({
+    //   ...req.body,
+    //   image: imgUploaded?.url,
+    //   user: _id,
+    // });
+    res.json(imgUploaded);
+    //remove uploaded img
+    fs.unlinkSync(localPath);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+//fetch all posts
+const fetchPostsCtrl = expressAsyncHandler(async (req, res) => {
+  try {
+    const posts = await Post.find({});
+    res.json(posts);
   } catch (error) {
     res.json(error);
   }
@@ -43,4 +56,5 @@ const createPostCtrl = expressAsyncHandler(async (req, res) => {
 
 module.exports = {
   createPostCtrl,
+  fetchPostsCtrl,
 };
