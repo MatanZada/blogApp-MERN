@@ -101,6 +101,13 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+//virtual method to populate created post
+userSchema.virtual("posts", {
+  ref: "Post",
+  foreignField: "user",
+  localField: "_id",
+});
+
 //Account Type
 userSchema.virtual("accountType").get(function () {
   const totalFollowers = this.followers?.length;

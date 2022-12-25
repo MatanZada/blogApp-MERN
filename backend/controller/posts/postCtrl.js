@@ -47,7 +47,7 @@ const createPostCtrl = expressAsyncHandler(async (req, res) => {
 //fetch all posts
 const fetchPostsCtrl = expressAsyncHandler(async (req, res) => {
   try {
-    const posts = await Post.find({});
+    const posts = await Post.find({}).populate("user");
     res.json(posts);
   } catch (error) {
     res.json(error);
