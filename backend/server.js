@@ -4,7 +4,8 @@ dotenv.config();
 const dbConnect = require("./config/db/dbConnect");
 const userRoutes = require("./route/users/usersRoute");
 const { errorHandler, notFound } = require("./middlewares/error/errorHandler");
-const postRoute = require("./route/post/postsRoute");
+const postRoute = require("./route/posts/postsRoute");
+const commentRoute = require("./route/comments/commentRoute");
 
 const app = express();
 //DB
@@ -17,6 +18,8 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 //Post route
 app.use("/api/posts", postRoute);
+//Comment Route
+app.use("/api/comments", commentRoute);
 
 app.get("/", (req, res) => {
   res.json({ msg: "API for blog Application..." });
