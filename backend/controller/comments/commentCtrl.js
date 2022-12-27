@@ -1,6 +1,6 @@
 const expressAsyncHandler = require("express-async-handler");
 const Comment = require("../../model/comment/Comment");
-
+const { validateMongodbId } = require("../../utils/validateMongodbID");
 //create
 const createCommentCtrl = expressAsyncHandler(async (req, res) => {
   //1. get the user
@@ -35,6 +35,7 @@ const fetchAllCommentsCtrl = expressAsyncHandler(async (req, res) => {
 //comment details
 const fetchCommentCtrl = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
+  validateMongodbId(id);
   try {
     const comment = await Comment.findById(id);
     res.json(comment);
@@ -46,6 +47,7 @@ const fetchCommentCtrl = expressAsyncHandler(async (req, res) => {
 //update
 const updateCommentCtrl = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
+  validateMongodbId(id);
   // console.log(id);
   try {
     const update = await Comment.findByIdAndUpdate(
@@ -63,9 +65,22 @@ const updateCommentCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//delete
+const deleteCommentCtrl = expressAsyncHandler(async (req, res) => {
+  const { id } = req.params;
+  validateMongodbId(id);
+  try {
+    const comment = await Comment.findByIdAndDelete(id);
+    res.json(comment);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 module.exports = {
   createCommentCtrl,
   fetchAllCommentsCtrl,
   fetchCommentCtrl,
   updateCommentCtrl,
+  deleteCommentCtrl,
 };
