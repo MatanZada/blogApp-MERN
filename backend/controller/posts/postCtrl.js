@@ -59,7 +59,10 @@ const fetchPostCtrl = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongodbId(id);
   try {
-    const post = await Post.findById(id).populate("user");
+    const post = await Post.findById(id)
+      .populate("user")
+      .populate("disLikes")
+      .populate("likes");
     //update number
     await Post.findByIdAndUpdate(
       id,
