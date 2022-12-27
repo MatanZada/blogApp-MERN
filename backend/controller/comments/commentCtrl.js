@@ -22,4 +22,14 @@ const createCommentCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createCommentCtrl };
+//fetch all comments
+const fetchAllCommentsCtrl = expressAsyncHandler(async (req, res) => {
+  try {
+    const comments = await Comment.find({}).sort("-created");
+    res.json(comments);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+module.exports = { createCommentCtrl, fetchAllCommentsCtrl };
