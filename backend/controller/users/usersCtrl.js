@@ -260,7 +260,7 @@ const generateVerificationTokenCtrl = expressAsyncHandler(async (req, res) => {
 
     const msg = {
       to: user?.email,
-      from: "matan.zada1@gmail.com",
+      from: "matan.zada1@outlook.co.il",
       subject: "Verify your account",
       html: resetURL,
     };

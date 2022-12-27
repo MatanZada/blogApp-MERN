@@ -6,6 +6,7 @@ const userRoutes = require("./route/users/usersRoute");
 const { errorHandler, notFound } = require("./middlewares/error/errorHandler");
 const postRoute = require("./route/posts/postsRoute");
 const commentRoute = require("./route/comments/commentRoute");
+const emailMsgRoute = require("./route/emailMsg/emailMsgRoute");
 
 const app = express();
 //DB
@@ -20,6 +21,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoute);
 //Comment Route
 app.use("/api/comments", commentRoute);
+//email msg
+app.use("/api/email", emailMsgRoute);
 
 app.get("/", (req, res) => {
   res.json({ msg: "API for blog Application..." });
