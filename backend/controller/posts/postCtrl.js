@@ -160,6 +160,57 @@ const toggleAddLikeToPostCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//disLikes
+const toggleAddDislikeToPostCtrl = expressAsyncHandler(async (req, res) => {
+  //1.find the post to be disliked
+  const { postId } = req.body;
+  const post = await Post.findById(postId);
+  //2.find the login user
+  const loginUserId = req?.user?._id;
+  //3. check if this user has already disLikes
+  const isDisLiked = post?.isDisLiked;
+  //4. check if already like this post
+  const alreadyLiked = post?.likes?.find(
+    (userId) => userId.toString() === loginUserId?.toString()
+  );
+  // console.log(alreadyLiked);
+  //remove this user from likes if it exists
+  if (alreadyLiked) {
+    const post = await Post.findOneAndUpdate(
+      postId,
+      {
+        $pull: { likes: loginUserId },
+        isLiked: false,
+      },
+      { new: true }
+    );
+    res.json(post);
+  }
+  //Toggle
+  //Remove the user from dislikes if already disliked
+  if (isDisLiked) {
+    const post = await Post.findOneAndUpdate(
+      postId,
+      {
+        $pull: { disLikes: loginUserId },
+        isDisLiked: false,
+      },
+      { new: true }
+    );
+    res.json(post);
+  } else {
+    const post = await Post.findOneAndUpdate(
+      postId,
+      {
+        $push: { disLikes: loginUserId },
+        isDisLiked: true,
+      },
+      { new: true }
+    );
+    res.json(post);
+  }
+});
+
 module.exports = {
   createPostCtrl,
   fetchPostsCtrl,
@@ -167,4 +218,5 @@ module.exports = {
   updatePostCtrl,
   deletePostCtrl,
   toggleAddLikeToPostCtrl,
+  toggleAddDislikeToPostCtrl,
 };
