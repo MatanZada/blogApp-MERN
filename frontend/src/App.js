@@ -1,11 +1,14 @@
-import "./App.css";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./components/HomePage/HomePage";
 
 function App() {
   return (
-    <div>
-      <h1 className="text-yellow-400">Hello world!</h1>
-      <h2>asddsa</h2>
-    </div>
+    <React.Fragment>
+      <Routes>
+        <Route exact path="/" element={<HomePage />} />
+      </Routes>
+    </React.Fragment>
   );
 }
 
