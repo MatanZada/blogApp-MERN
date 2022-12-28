@@ -11,7 +11,7 @@ const sendEmailMsgCtrl = expressAsyncHandler(async (req, res) => {
       to,
       subject,
       text: message,
-      from: "matan.zada1@outlook.co.il",
+      from: "matanzada@outlook.co.il",
     };
     //send massage
     await sgMail.send(msg);
