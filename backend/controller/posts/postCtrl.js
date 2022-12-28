@@ -7,38 +7,59 @@ const User = require("../../model/user/User");
 const cloudinaryUploadImg = require("../../utils/cloudinary");
 
 const createPostCtrl = expressAsyncHandler(async (req, res) => {
-  // console.log(req.file);
   const { _id } = req.user;
-  //   validateMongodbId(req.body.user);
-  //check for bad words
+  //Display message if user is blocked
+  blockUser(req.user);
+  //validateMongodbId(req.body.user);
+  //Check for bad words
   const filter = new Filter();
   const isProfane = filter.isProfane(req.body.title, req.body.description);
-  //   console.log(isProfane);
-  //block user
+  //Block user
   if (isProfane) {
     await User.findByIdAndUpdate(_id, {
       isBlocked: true,
     });
     throw new Error(
-      "Creating faild bacause it contains profane words and you have been blocked"
+      "Creating Failed because it contains profane words and you have been blocked"
+    );
+  }
+
+  //Prevet user f his account is a starter account
+
+  if (
+    req?.user?.accountType === "Starter Account" &&
+    req?.user?.postCount >= 2
+  ) {
+    throw new Error(
+      "Starter account can only create two posts. Get more followers."
     );
   }
 
   // //1. Get the path to img
-  // const localPath = `public/images/posts/${req.file.filename}`;
+  const localPath = `public/images/posts/${req.file.filename}`;
   // //2.Upload to cloudinary
-  // const imgUploaded = await cloudinaryUploadImg(localPath);
-  // res.json(imgUploaded);
-
+  const imgUploaded = await cloudinaryUploadImg(localPath);
   try {
     const post = await Post.create({
       ...req.body,
-      // image: imgUploaded?.url,
       user: _id,
+      image: imgUploaded?.url,
     });
+    console.log(req.user);
+    //update the user post count
+    await User.findByIdAndUpdate(
+      _id,
+      {
+        $inc: { postCount: 1 },
+      },
+      {
+        new: true,
+      }
+    );
+
+    //Remove uploaded img
+    fs.unlinkSync(localPath);
     res.json(post);
-    //remove uploaded img
-    // fs.unlinkSync(localPath);
   } catch (error) {
     res.json(error);
   }
