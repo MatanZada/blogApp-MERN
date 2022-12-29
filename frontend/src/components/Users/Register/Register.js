@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { registerUserAction } from "../../../redux/slices/users/usersSlices";
 
@@ -34,6 +34,10 @@ const Register = () => {
   });
   //   console.log(formik);
 
+  //select state from store
+  const storeData = useSelector((store) => store?.users);
+  const { loading, appErr, serverErr, registered } = storeData;
+  console.log(appErr, serverErr);
   return (
     <section className="relative py-20 2xl:py-40 bg-gray-800 overflow-hidden">
       <div className="relative container px-4 mx-auto">
@@ -55,6 +59,11 @@ const Register = () => {
                   <h3 className="mb-10 text-2xl text-white font-bold font-heading">
                     Register Account
                     {/* display error message*/}
+                    {appErr || serverErr ? (
+                      <div className="text-red-400">
+                        {serverErr} {appErr}
+                      </div>
+                    ) : null}
                   </h3>
 
                   {/* First name */}
@@ -253,12 +262,21 @@ const Register = () => {
                   <div className="inline-flex mb-10"></div>
 
                   {/* Check for loading */}
-                  <button
-                    type="submit"
-                    className="py-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200"
-                  >
-                    Register
-                  </button>
+                  {loading ? (
+                    <button
+                      disabled
+                      className="py-4 w-full bg-gray-500 text-white font-bold rounded-full transition duration-200"
+                    >
+                      loading please wait...
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="py-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200"
+                    >
+                      Register
+                    </button>
+                  )}
                 </form>
               </div>
             </div>
