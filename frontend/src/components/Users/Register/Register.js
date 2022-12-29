@@ -1,5 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { registerUserAction } from "../../../redux/slices/users/usersSlices";
@@ -16,6 +17,9 @@ const formSchema = Yup.object({
 const Register = () => {
   //dispatch
   const dispatch = useDispatch();
+
+  //navigate
+  const navigate = useNavigate();
 
   //formik
   const formik = useFormik({
@@ -37,7 +41,13 @@ const Register = () => {
   //select state from store
   const storeData = useSelector((store) => store?.users);
   const { loading, appErr, serverErr, registered } = storeData;
-  console.log(appErr, serverErr);
+  console.log(registered);
+
+  //navigate
+  if (registered) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <section className="relative py-20 2xl:py-40 bg-gray-800 overflow-hidden">
       <div className="relative container px-4 mx-auto">
