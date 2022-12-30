@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { registerUserAction } from "../../../redux/slices/users/usersSlices";
@@ -32,7 +32,7 @@ const Register = () => {
     onSubmit: (values) => {
       //dispatch
       dispatch(registerUserAction(values));
-      console.log(values);
+      // console.log(values);
     },
     validationSchema: formSchema,
   });
@@ -41,11 +41,11 @@ const Register = () => {
   //select state from store
   const storeData = useSelector((store) => store?.users);
   const { loading, appErr, serverErr, registered } = storeData;
-  console.log(registered);
+  // console.log(registered);
 
   //navigate
   if (registered) {
-    return <Navigate to="/" />;
+    navigate("/profile");
   }
 
   return (
