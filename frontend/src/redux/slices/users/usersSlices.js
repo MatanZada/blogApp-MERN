@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
 import axios from "axios";
+import { baseUrl } from "../../../utils/baseURL";
 
 //register action
 
@@ -15,10 +15,38 @@ export const registerUserAction = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        "http://localhost:8080/api/users/register",
+        `${baseUrl}/api/users/register`,
         user,
         config
       );
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//login action
+export const loginUserAction = createAsyncThunk(
+  "users/login",
+  async (userData, { rejectWithValue, getState, dispatch }) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      //make http call
+      const { data } = await axios.post(
+        `${baseUrl}/api/users/login`,
+        userData,
+        config
+      );
+      //save user into local storage
+      localStorage.setItem("userInfo", JSON.stringify(userData));
       return data;
     } catch (error) {
       if (!error?.response) {
