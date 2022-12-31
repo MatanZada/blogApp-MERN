@@ -2,6 +2,8 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import poster from "../../../img/poster.png";
+import { loginUserAction } from "../../../redux/slices/users/usersSlices";
+import { useDispatch, useSelector } from "react-redux";
 
 //Form schema
 const formSchema = Yup.object({
@@ -10,6 +12,7 @@ const formSchema = Yup.object({
 });
 
 const Login = () => {
+  const dispatch = useDispatch();
   //formik
   const formik = useFormik({
     initialValues: {
@@ -18,6 +21,7 @@ const Login = () => {
     },
     onSubmit: (values) => {
       //dispath the action
+      dispatch(loginUserAction(values));
       console.log(values);
     },
     validationSchema: formSchema,
