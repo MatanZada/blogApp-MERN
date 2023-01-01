@@ -1,10 +1,10 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import AddNewCategory from "./components/Categories/AddNewCategory";
 import HomePage from "./components/HomePage/HomePage";
 import Navbar from "./components/Navigation/Navbar";
 import Login from "./components/Users/Login/Login";
 import Register from "./components/Users/Register/Register";
-
 function App() {
   return (
     <React.Fragment>
@@ -13,6 +13,7 @@ function App() {
         <Route exact path="/" element={<HomePage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/add-category" element={<AddNewCategory />} />
       </Routes>
     </React.Fragment>
   );
