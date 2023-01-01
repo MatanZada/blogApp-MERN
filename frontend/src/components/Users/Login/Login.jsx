@@ -24,14 +24,14 @@ const Login = () => {
     onSubmit: (values) => {
       //dispath the action
       dispatch(loginUserAction(values));
-      console.log(values);
+      // console.log(values);
     },
     validationSchema: formSchema,
   });
 
   //navigate
   const store = useSelector((state) => state?.users);
-  console.log(store);
+  // console.log(store);
   const { userAuth, loading, serverErr, appErr } = store;
   // if (userAuth) {
   //   return navigate("/profile");
