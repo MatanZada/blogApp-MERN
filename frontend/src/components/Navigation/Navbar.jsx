@@ -12,14 +12,15 @@ const Navbar = () => {
   // console.log(userAuth);
   const isAdmin = userAuth?.isAdmin;
   // console.log(isAdmin);
+
   return (
     <>
-      {!userAuth ? (
-        <PublicNavbar />
+      {isAdmin ? (
+        <AdminNavbar />
       ) : userAuth ? (
         <PrivateNavbar />
       ) : (
-        isAdmin && <AdminNavbar />
+        <PublicNavbar />
       )}
     </>
   );

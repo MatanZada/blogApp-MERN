@@ -62,6 +62,21 @@ export const loginUserAction = createAsyncThunk(
   }
 );
 
+//logout action
+export const logoutUserAction = createAsyncThunk(
+  "users/logout",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      localStorage.removeItem("userInfo");
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //slices
 
 const usersSlices = createSlice({
@@ -102,6 +117,21 @@ const usersSlices = createSlice({
       state.serverErr = undefined;
     });
     builder.addCase(loginUserAction.rejected, (state, action) => {
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+      state.loading = false;
+    });
+    //logout
+    builder.addCase(logoutUserAction.pending, (state, action) => {
+      state.loading = false;
+    });
+    builder.addCase(logoutUserAction.fulfilled, (state, action) => {
+      state.userAuth = undefined;
+      state.loading = false;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(logoutUserAction.rejected, (state, action) => {
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
       state.loading = false;
