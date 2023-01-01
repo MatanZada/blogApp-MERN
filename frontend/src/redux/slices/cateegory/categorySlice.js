@@ -6,11 +6,26 @@ import baseUrl from "../../../utils/baseURL";
 export const createCategoryAction = createAsyncThunk(
   "category/create",
   async (category, { rejectWithValue, getState, dispatch }) => {
+    // console.log(getState());
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+    // console.log(userAuth?.token);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
     //http call
     try {
-      const { data } = await axios.post(`${baseUrl}/api/category`, {
-        title: category?.title,
-      });
+      const { data } = await axios.post(
+        `${baseUrl}/api/category`,
+        {
+          title: category?.title,
+        },
+        config
+      );
+      return data;
     } catch (error) {
       if (!error?.response) {
         throw error;
