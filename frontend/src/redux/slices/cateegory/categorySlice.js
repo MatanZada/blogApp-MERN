@@ -5,16 +5,15 @@ import baseUrl from "../../../utils/baseURL";
 //action to redirect
 const resetEditAction = createAction("category/reset");
 const resetDeleteAction = createAction("category/delete-reset");
+const resetCategoryAction = createAction("category/created-reset");
 
 //action
 export const createCategoryAction = createAsyncThunk(
   "category/create",
   async (category, { rejectWithValue, getState, dispatch }) => {
-    // console.log(getState());
     //get user token
     const user = getState()?.users;
     const { userAuth } = user;
-    // console.log(userAuth?.token);
     const config = {
       headers: {
         Authorization: `Bearer ${userAuth?.token}`,
@@ -29,6 +28,8 @@ export const createCategoryAction = createAsyncThunk(
         },
         config
       );
+      //disoatch action
+      dispatch(resetCategoryAction());
       return data;
     } catch (error) {
       if (!error?.response) {
@@ -43,11 +44,9 @@ export const createCategoryAction = createAsyncThunk(
 export const fetchCategoriesAction = createAsyncThunk(
   "category/fetch",
   async (category, { rejectWithValue, getState, dispatch }) => {
-    // console.log(getState());
     //get user token
     const user = getState()?.users;
     const { userAuth } = user;
-    // console.log(userAuth?.token);
     const config = {
       headers: {
         Authorization: `Bearer ${userAuth?.token}`,
@@ -151,7 +150,6 @@ export const fetchCategoryAction = createAsyncThunk(
     }
   }
 );
-
 //slices
 
 const categorySlices = createSlice({
@@ -162,8 +160,13 @@ const categorySlices = createSlice({
     builder.addCase(createCategoryAction.pending, (state, action) => {
       state.loading = true;
     });
+    //dispatch action to redirect
+    builder.addCase(resetCategoryAction, (state, action) => {
+      state.isCreated = true;
+    });
     builder.addCase(createCategoryAction.fulfilled, (state, action) => {
       state.category = action?.payload;
+      state.isCreated = false;
       state.loading = false;
       state.appErr = undefined;
       state.serverErr = undefined;
@@ -173,7 +176,7 @@ const categorySlices = createSlice({
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
     });
-    //fetch all categories
+    //fetch all
     builder.addCase(fetchCategoriesAction.pending, (state, action) => {
       state.loading = true;
     });
@@ -208,6 +211,7 @@ const categorySlices = createSlice({
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
     });
+
     //delete
     builder.addCase(deleteCategoriesAction.pending, (state, action) => {
       state.loading = true;
@@ -228,6 +232,7 @@ const categorySlices = createSlice({
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
     });
+
     //fetch details
     builder.addCase(fetchCategoryAction.pending, (state, action) => {
       state.loading = true;
