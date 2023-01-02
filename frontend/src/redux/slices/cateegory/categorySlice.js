@@ -35,13 +35,38 @@ export const createCategoryAction = createAsyncThunk(
   }
 );
 
+//action
+export const fetchCategoriesAction = createAsyncThunk(
+  "category/fetch",
+  async (category, { rejectWithValue, getState, dispatch }) => {
+    // console.log(getState());
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+    // console.log(userAuth?.token);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+    //http call
+    try {
+      const { data } = await axios.get(`${baseUrl}/api/category`, config);
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //slices
 
 const categorySlices = createSlice({
   name: "category",
-  initialState: {
-    category: "node js",
-  },
+  initialState: {},
   extraReducers: (builder) => {
     //create
     builder.addCase(createCategoryAction.pending, (state, action) => {
@@ -54,6 +79,21 @@ const categorySlices = createSlice({
       state.serverErr = undefined;
     });
     builder.addCase(createCategoryAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+    //fetch all categories
+    builder.addCase(fetchCategoriesAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchCategoriesAction.fulfilled, (state, action) => {
+      state.categoryList = action?.payload;
+      state.loading = false;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(fetchCategoriesAction.rejected, (state, action) => {
       state.loading = false;
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
