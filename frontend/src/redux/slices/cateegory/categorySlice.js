@@ -127,6 +127,31 @@ export const deleteCategoriesAction = createAsyncThunk(
   }
 );
 
+//fetch details
+export const fetchCategoryAction = createAsyncThunk(
+  "category/details",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+    //http call
+    try {
+      const { data } = await axios.get(`${baseUrl}/api/category/${id}`, config);
+      return data;
+    } catch (error) {
+      if (!error?.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //slices
 
 const categorySlices = createSlice({
@@ -199,6 +224,21 @@ const categorySlices = createSlice({
       state.serverErr = undefined;
     });
     builder.addCase(deleteCategoriesAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+    //fetch details
+    builder.addCase(fetchCategoryAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchCategoryAction.fulfilled, (state, action) => {
+      state.category = action?.payload;
+      state.loading = false;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(fetchCategoryAction.rejected, (state, action) => {
       state.loading = false;
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
