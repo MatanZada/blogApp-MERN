@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { fetchCategoriesAction } from "../../redux/slices/cateegory/categorySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import DateFormatter from "../../utils/DateFormatter";
+import LoadingComponent from "../../utils/LoadingComponent";
 
 const CategoryList = () => {
   const dispatch = useDispatch();
@@ -17,7 +19,7 @@ const CategoryList = () => {
     <>
       {loading ? (
         <>
-          <h2>loading</h2>
+          <LoadingComponent />
         </>
       ) : appErr || serverErr ? (
         <h2 className="text-center text-3xl text-red-600">
@@ -88,7 +90,7 @@ const CategoryList = () => {
                           {category.title}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {category?.createdAt}
+                          {<DateFormatter date={category?.createdAt} />}
                         </td>
                         <Link to={`/update-category/${category?._id}`}>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
