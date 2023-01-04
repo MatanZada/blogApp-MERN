@@ -53,7 +53,7 @@ const loginUserCtrl = expressAsyncHandler(async (req, res) => {
 });
 
 //user
-const fetchUserCtrl = expressAsyncHandler(async (req, res) => {
+const fetchUsersCtrl = expressAsyncHandler(async (req, res) => {
   try {
     const users = await User.find({});
     res.json(users);
@@ -63,7 +63,7 @@ const fetchUserCtrl = expressAsyncHandler(async (req, res) => {
 });
 
 //delete user
-const deleteUserCtrl = expressAsyncHandler(async (req, res) => {
+const deleteUsersCtrl = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
   //check if user id is valid
   validateMongodbId(id);
@@ -109,7 +109,7 @@ const userProfileCtrl = expressAsyncHandler(async (req, res) => {
 
 //update profile
 
-const updateUserProfileCtrl = expressAsyncHandler(async (req, res) => {
+const updateUserCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req?.user;
   //check if user id is valid
   validateMongodbId(_id);
@@ -295,7 +295,7 @@ const accountVerificationCtrl = expressAsyncHandler(async (req, res) => {
 
 //forget token generator
 
-const forgetPasswordCtrl = expressAsyncHandler(async (req, res) => {
+const forgetPasswordToken = expressAsyncHandler(async (req, res) => {
   // res.send("OK");
   //find the user by email
   const { email } = req.body;
@@ -374,11 +374,11 @@ module.exports = {
   profilePhotoUploadCtrl,
   userRegisterCtrl,
   loginUserCtrl,
-  fetchUserCtrl,
-  deleteUserCtrl,
+  fetchUsersCtrl,
+  deleteUsersCtrl,
   fetchUserDetailsCtrl,
   userProfileCtrl,
-  updateUserProfileCtrl,
+  updateUserCtrl,
   updateUserPasswordCtrl,
   followingUserCtrl,
   unfollowUserCtrl,
@@ -386,6 +386,6 @@ module.exports = {
   unBlockUserCtrl,
   generateVerificationTokenCtrl,
   accountVerificationCtrl,
-  forgetPasswordCtrl,
+  forgetPasswordToken,
   passwordResetCtrl,
 };

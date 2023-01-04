@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.5",
     "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.13",
     "@iconify-icons/heroicons-outline": "^1.2.5",
@@ -14,9 +15,11 @@
     "formik": "^2.2.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-moment": "^1.1.2",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
+    "react-spinners": "^0.13.7",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
