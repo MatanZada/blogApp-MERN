@@ -8,7 +8,8 @@ const {
   toggleAddLikeToPostCtrl,
   toggleAddDislikeToPostCtrl,
 } = require("../../controller/posts/postCtrl");
-const { authMiddleware } = require("../../middlewares/auth/authMiddleware");
+const authMiddleware = require("../../middlewares/auth/authMiddleware");
+
 const {
   photoUpload,
   postImageResize,

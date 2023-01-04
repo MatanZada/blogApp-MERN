@@ -6,7 +6,7 @@ const {
   updateCommentCtrl,
   deleteCommentCtrl,
 } = require("../../controller/comments/commentCtrl");
-const { authMiddleware } = require("../../middlewares/auth/authMiddleware");
+const authMiddleware = require("../../middlewares/auth/authMiddleware");
 const commentRoutes = express.Router();
 
 commentRoutes.post("/", authMiddleware, createCommentCtrl);

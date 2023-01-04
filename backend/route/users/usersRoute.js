@@ -2,11 +2,11 @@ const express = require("express");
 const {
   userRegisterCtrl,
   loginUserCtrl,
-  fetchUserCtrl,
-  deleteUserCtrl,
+  fetchUsersCtrl,
+  deleteUsersCtrl,
   fetchUserDetailsCtrl,
   userProfileCtrl,
-  updateUserProfileCtrl,
+  updateUserCtrl,
   updateUserPasswordCtrl,
   followingUserCtrl,
   unfollowUserCtrl,
@@ -14,29 +14,20 @@ const {
   unBlockUserCtrl,
   generateVerificationTokenCtrl,
   accountVerificationCtrl,
-  forgetPasswordCtrl,
+  forgetPasswordToken,
   passwordResetCtrl,
   profilePhotoUploadCtrl,
 } = require("../../controller/users/usersCtrl");
-const { authMiddleware } = require("../../middlewares/auth/authMiddleware");
+const authMiddleware = require("../../middlewares/auth/authMiddleware");
 const {
   photoUpload,
   profilePhotoResize,
 } = require("../../middlewares/uploads/photoUpload");
+
 const userRoutes = express.Router();
 
 userRoutes.post("/register", userRegisterCtrl);
 userRoutes.post("/login", loginUserCtrl);
-userRoutes.get("/", authMiddleware, fetchUserCtrl);
-userRoutes.get("/profile/:id", authMiddleware, userProfileCtrl);
-userRoutes.put("/follow", authMiddleware, followingUserCtrl);
-userRoutes.post(
-  "/generate-verify-email-token",
-  authMiddleware,
-  generateVerificationTokenCtrl
-);
-userRoutes.put("/verify-account", accountVerificationCtrl);
-
 userRoutes.put(
   "/profilephoto-upload",
   authMiddleware,
@@ -44,14 +35,25 @@ userRoutes.put(
   profilePhotoResize,
   profilePhotoUploadCtrl
 );
+userRoutes.get("/", authMiddleware, fetchUsersCtrl);
+// Password reset
+userRoutes.post("/forget-password-token", forgetPasswordToken);
+userRoutes.put("/reset-password", passwordResetCtrl);
+userRoutes.put("/password", authMiddleware, updateUserPasswordCtrl);
+userRoutes.put("/follow", authMiddleware, followingUserCtrl);
+userRoutes.post(
+  "/generate-verify-email-token",
+  authMiddleware,
+  generateVerificationTokenCtrl
+);
+
+userRoutes.put("/verify-account", authMiddleware, accountVerificationCtrl);
 userRoutes.put("/unfollow", authMiddleware, unfollowUserCtrl);
 userRoutes.put("/block-user/:id", authMiddleware, blockUserCtrl);
 userRoutes.put("/unblock-user/:id", authMiddleware, unBlockUserCtrl);
-userRoutes.put("/:id", authMiddleware, updateUserProfileCtrl);
-userRoutes.put("/password/:id", authMiddleware, updateUserPasswordCtrl);
-userRoutes.post("/forget-password-token", forgetPasswordCtrl);
-userRoutes.post("/reset-password", passwordResetCtrl);
-userRoutes.delete("/:id", deleteUserCtrl);
+userRoutes.get("/profile/:id", authMiddleware, userProfileCtrl);
+userRoutes.put("/", authMiddleware, updateUserCtrl);
+userRoutes.delete("/:id", deleteUsersCtrl);
 userRoutes.get("/:id", fetchUserDetailsCtrl);
 
 module.exports = userRoutes;
