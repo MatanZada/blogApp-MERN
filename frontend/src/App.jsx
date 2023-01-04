@@ -18,7 +18,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/add-category" element={<AddNewCategory />} />
         <Route path="/category-list" element={<CategoryList />} />
-        <Route path="/update-category" element={<UpdateCategory />} />
+        <Route path="/update-category/:id" element={<UpdateCategory />} />
       </Routes>
     </React.Fragment>
   );

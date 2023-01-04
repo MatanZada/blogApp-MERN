@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PlusCircleIcon, BookOpenIcon } from "@heroicons/react/24/solid";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -15,23 +15,23 @@ const formSchema = Yup.object({
   title: Yup.string().required("Title is required"),
 });
 
-const UpdateCategory = ({
-  computedMatch: {
-    params: { id },
-  },
-}) => {
+const UpdateCategory = () => {
+  const { id } = useParams();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   //fetch single category
   useEffect(() => {
     dispatch(fetchCategoryAction(id));
+    console.log(id);
   }, [dispatch, id]);
 
   //get data from store
   const state = useSelector((state) => state?.category);
 
   const { loading, appErr, serverErr, category, isEdited, isDeleted } = state;
+  console.log(state);
 
   //formik
   const formik = useFormik({
