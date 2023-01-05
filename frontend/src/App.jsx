@@ -8,11 +8,14 @@ import Navbar from "./components/Navigation/Navbar";
 import Login from "./components/Users/Login/Login";
 import Register from "./components/Users/Register/Register";
 import { useSelector } from "react-redux";
+import CreatePost from "./components/Post/CreatePost";
 
 function App({ ...rest }) {
   //check if user is login
   const user = useSelector((state) => state?.users);
   const { userAuth } = user;
+  // userAuth?.isAdmin
+  // check if user is admin
 
   return (
     <React.Fragment>
@@ -21,6 +24,7 @@ function App({ ...rest }) {
         <Route exact path="/" element={<HomePage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+
         <Route
           path="/add-category"
           {...rest}
@@ -28,6 +32,15 @@ function App({ ...rest }) {
             userAuth ? <AddNewCategory {...rest} /> : <Navigate to="/login" />
           }
         />
+
+        <Route
+          path="/create-post"
+          {...rest}
+          element={
+            userAuth ? <CreatePost {...rest} /> : <Navigate to="/login" />
+          }
+        />
+
         <Route
           path="/category-list"
           {...rest}
