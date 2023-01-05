@@ -1,8 +1,14 @@
 import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseUrl from "../../../utils/baseURL";
+//create post action
 
-//create Post action
+//action to navigate
+const resetPost = createAction("category/reset");
+const resetPostEdit = createAction("post/reset");
+const resetPostDelete = createAction("post/delete");
+
+//create
 export const createpostAction = createAsyncThunk(
   "post/created",
   async (post, { rejectWithValue, getState, dispatch }) => {
@@ -17,7 +23,19 @@ export const createpostAction = createAsyncThunk(
     };
     try {
       //http call
-      const { data } = await axios.post(`${baseUrl}/api/posts`, post, config);
+      const formData = new FormData();
+      formData.append("title", post?.title);
+      formData.append("description", post?.description);
+      formData.append("category", post?.category);
+      formData.append("image", post?.image);
+
+      const { data } = await axios.post(
+        `${baseUrl}/api/posts`,
+        formData,
+        config
+      );
+      //dispatch action
+      dispatch(resetPost());
       return data;
     } catch (error) {
       if (!error?.response) throw error;
@@ -30,12 +48,14 @@ export const createpostAction = createAsyncThunk(
 
 const postSlice = createSlice({
   name: "post",
-  initialState: {
-    post: 20,
-  },
+  initialState: {},
   extraReducers: (builder) => {
+    //create post
     builder.addCase(createpostAction.pending, (state, action) => {
       state.loading = true;
+    });
+    builder.addCase(resetPost, (state, action) => {
+      state.isCreated = true;
     });
     builder.addCase(createpostAction.fulfilled, (state, action) => {
       state.postCreated = action?.payload;

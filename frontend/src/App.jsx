@@ -26,18 +26,18 @@ function App({ ...rest }) {
         <Route path="/login" element={<Login />} />
 
         <Route
-          path="/add-category"
-          {...rest}
-          element={
-            userAuth ? <AddNewCategory {...rest} /> : <Navigate to="/login" />
-          }
-        />
-
-        <Route
           path="/create-post"
           {...rest}
           element={
             userAuth ? <CreatePost {...rest} /> : <Navigate to="/login" />
+          }
+        />
+
+        <Route
+          path="/add-category"
+          {...rest}
+          element={
+            userAuth ? <AddNewCategory {...rest} /> : <Navigate to="/login" />
           }
         />
 
@@ -48,6 +48,7 @@ function App({ ...rest }) {
             userAuth ? <CategoryList {...rest} /> : <Navigate to="/login" />
           }
         />
+
         <Route
           path="/update-category/:id"
           {...rest}
