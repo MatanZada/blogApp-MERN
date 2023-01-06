@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
+import { fetchPostsAction } from "../../redux/slices/posts/postSlices";
 import DateFormatter from "../../utils/DateFormatter";
 import { fetchCategoriesAction } from "../../redux/slices/cateegory/categorySlice";
 import LoadingComponent from "../../utils/LoadingComponent";
@@ -21,7 +21,10 @@ export default function PostsList() {
   } = category;
   //dispatch
   const dispatch = useDispatch();
-
+  //fetch post
+  useEffect(() => {
+    dispatch(fetchPostsAction(""));
+  }, [dispatch, likes, dislikes]);
   //fetch categories
   useEffect(() => {
     dispatch(fetchCategoriesAction());
@@ -43,7 +46,10 @@ export default function PostsList() {
               </div>
               <div className=" block text-right w-1/2">
                 {/* View All */}
-                <button className="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-green-600 hover:bg-green-700 text-gray-50 font-bold leading-loose transition duration-200">
+                <button
+                  onClick={() => dispatch(fetchPostsAction(""))}
+                  className="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-green-600 hover:bg-green-700 text-gray-50 font-bold leading-loose transition duration-200"
+                >
                   View All Posts
                 </button>
               </div>
@@ -68,7 +74,12 @@ export default function PostsList() {
                     ) : (
                       categoryList?.map((category) => (
                         <li>
-                          <p className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-500 font-bold bg-gray-500">
+                          <p
+                            onClick={() =>
+                              dispatch(fetchPostsAction(category?.title))
+                            }
+                            className="block cursor-pointer py-2 px-3 mb-4 rounded text-yellow-500 font-bold bg-gray-500"
+                          >
                             {category?.title}
                           </p>
                         </li>
@@ -115,6 +126,9 @@ export default function PostsList() {
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
                                 stroke="currentColor"
+                                // onClick={() =>
+                                //   dispatch(toggleAddLikesToPost(post?._id))
+                                // }
                                 className="h-7 w-7 text-indigo-600 cursor-pointer"
                               >
                                 <path
@@ -137,6 +151,9 @@ export default function PostsList() {
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
                                 stroke="currentColor"
+                                // onClick={() =>
+                                //   dispatch(toggleAddDisLikesToPost(post?._id))
+                                // }
                                 className="h-7 w-7 cursor-pointer text-gray-600"
                               >
                                 <path
