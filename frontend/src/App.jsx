@@ -9,6 +9,7 @@ import Login from "./components/Users/Login/Login";
 import Register from "./components/Users/Register/Register";
 import { useSelector } from "react-redux";
 import CreatePost from "./components/Post/CreatePost";
+import PostsList from "./components/Post/PostsList";
 
 function App({ ...rest }) {
   //check if user is login
@@ -24,6 +25,7 @@ function App({ ...rest }) {
         <Route exact path="/" element={<HomePage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/posts" element={<PostsList />} />
 
         <Route
           path="/create-post"
