@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchPostsAction } from "../../redux/slices/posts/postSlices";
+import {
+  fetchPostsAction,
+  toggleAddLikeToPost,
+} from "../../redux/slices/posts/postSlices";
 import DateFormatter from "../../utils/DateFormatter";
 import { fetchCategoriesAction } from "../../redux/slices/cateegory/categorySlice";
 import LoadingComponent from "../../utils/LoadingComponent";
@@ -126,9 +129,9 @@ export default function PostsList() {
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
                                 stroke="currentColor"
-                                // onClick={() =>
-                                //   dispatch(toggleAddLikesToPost(post?._id))
-                                // }
+                                onClick={() =>
+                                  dispatch(toggleAddLikeToPost(post?._id))
+                                }
                                 className="h-7 w-7 text-indigo-600 cursor-pointer"
                               >
                                 <path

@@ -61,7 +61,7 @@ export const fetchPostsAction = createAsyncThunk(
 );
 
 //add likes to post
-export const toggleAddLikesToPost = createAsyncThunk(
+export const toggleAddLikeToPost = createAsyncThunk(
   "post/like",
   async (postId, { rejectWithValue, getState, dispatch }) => {
     //get user token
@@ -128,16 +128,16 @@ const postSlice = createSlice({
       state.serverErr = action?.error?.message;
     });
     //Likes
-    builder.addCase(toggleAddLikesToPost.pending, (state, action) => {
+    builder.addCase(toggleAddLikeToPost.pending, (state, action) => {
       state.loading = true;
     });
-    builder.addCase(toggleAddLikesToPost.fulfilled, (state, action) => {
+    builder.addCase(toggleAddLikeToPost.fulfilled, (state, action) => {
       state.likes = action?.payload;
       state.loading = false;
       state.appErr = undefined;
       state.serverErr = undefined;
     });
-    builder.addCase(toggleAddLikesToPost.rejected, (state, action) => {
+    builder.addCase(toggleAddLikeToPost.rejected, (state, action) => {
       state.loading = false;
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
