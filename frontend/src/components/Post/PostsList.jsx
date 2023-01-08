@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {
   fetchPostsAction,
   toggleAddLikeToPost,
+  toggleAddDisLikesToPost,
 } from "../../redux/slices/posts/postSlices";
 import DateFormatter from "../../utils/DateFormatter";
 import { fetchCategoriesAction } from "../../redux/slices/cateegory/categorySlice";
@@ -154,9 +155,9 @@ export default function PostsList() {
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
                                 stroke="currentColor"
-                                // onClick={() =>
-                                //   dispatch(toggleAddDisLikesToPost(post?._id))
-                                // }
+                                onClick={() =>
+                                  dispatch(toggleAddDisLikesToPost(post?._id))
+                                }
                                 className="h-7 w-7 cursor-pointer text-gray-600"
                               >
                                 <path
