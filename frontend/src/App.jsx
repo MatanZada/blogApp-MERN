@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import CreatePost from "./components/Post/CreatePost";
 import PostsList from "./components/Post/PostsList";
 import PostDetails from "./components/Post/PostDetails";
+import UpdatePost from "./components/Post/UpdatePost";
 
 function App({ ...rest }) {
   //check if user is login
@@ -34,6 +35,14 @@ function App({ ...rest }) {
           {...rest}
           element={
             userAuth ? <CreatePost {...rest} /> : <Navigate to="/login" />
+          }
+        />
+
+        <Route
+          path="/update-post/:id"
+          {...rest}
+          element={
+            userAuth ? <UpdatePost {...rest} /> : <Navigate to="/login" />
           }
         />
 
