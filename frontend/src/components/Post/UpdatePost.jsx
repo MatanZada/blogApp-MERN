@@ -1,9 +1,29 @@
 import React, { useEffect } from "react";
+import { useFormik } from "formik";
 import { Navigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
 import CategoriesOptions from "../Categories/CategoryDropDown";
+import {
+  fetchPostDetailsAction,
+  updatePostAction,
+} from "../../redux/slices/posts/postSlices";
+
+//Validation
+const formSchema = Yup.object({
+  title: Yup.string().required("Title is required"),
+  description: Yup.string().required("Description is required"),
+  category: Yup.object().required("Category is required"),
+});
 
 export default function UpdatePost() {
+  const { id } = useParams();
+  //Fetch the post in the url
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchPostDetailsAction(id));
+  }, [id, dispatch]);
   //selet post
   const postData = useSelector((state) => state.post);
   const { postDetails } = postData;
@@ -11,6 +31,24 @@ export default function UpdatePost() {
   //select updated post from store;
   const postUpdate = useSelector((state) => state.post);
   const { loading, appErr, serverErr, isUpdated } = postUpdate;
+  //formik
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      title: postDetails?.title,
+      description: postDetails?.description,
+      category: "",
+    },
+    onSubmit: (values) => {
+      const data = {
+        title: values.title,
+        description: values.description,
+        id,
+      };
+      dispatch(updatePostAction(data));
+    },
+    validationSchema: formSchema,
+  });
 
   //Navigate
   if (isUpdated) return <Navigate to="/posts" />;
@@ -31,7 +69,7 @@ export default function UpdatePost() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6">
+            <form onSubmit={formik.handleSubmit} className="space-y-6">
               <div>
                 <label
                   htmlFor="email"
@@ -45,12 +83,24 @@ export default function UpdatePost() {
                     name="title"
                     type="title"
                     autoComplete="title"
+                    onBlur={formik.handleBlur("title")}
+                    value={formik.values.title}
+                    onChange={formik.handleChange("title")}
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
-                <div className="text-red-500"></div>
+                <div className="text-red-500">
+                  {formik.touched.title && formik.errors.title}
+                </div>
               </div>
 
+              <CategoriesOptions
+                value={formik.values.category?.categoryTitle}
+                onChange={formik.setFieldValue}
+                onBlur={formik.setFieldTouched}
+                error={formik.errors.category}
+                touched={formik.touched.category}
+              />
               <div>
                 <label
                   htmlFor="password"
@@ -61,10 +111,15 @@ export default function UpdatePost() {
                 <textarea
                   rows="5"
                   cols="10"
+                  onBlur={formik.handleBlur("description")}
+                  value={formik.values.description}
+                  onChange={formik.handleChange("description")}
                   className="rounded-lg appearance-none block w-full py-3 px-3 text-base text-center leading-tight text-gray-600 bg-transparent focus:bg-transparent  border border-gray-200 focus:border-gray-500  focus:outline-none"
                   type="text"
                 ></textarea>
-                <div className="text-red-500"></div>
+                <div className="text-red-500">
+                  {formik.touched.description && formik.errors.description}
+                </div>
               </div>
 
               <div>
