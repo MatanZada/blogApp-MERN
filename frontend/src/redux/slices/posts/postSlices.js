@@ -60,6 +60,20 @@ export const fetchPostsAction = createAsyncThunk(
   }
 );
 
+//fetch post details
+export const fetchPostDetailsAction = createAsyncThunk(
+  "post/detail",
+  async (id, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axios.get(`${baseUrl}/api/posts/${id}`);
+      return data;
+    } catch (error) {
+      if (!error?.response) throw error;
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //add likes to post
 export const toggleAddLikeToPost = createAsyncThunk(
   "post/like",
@@ -150,6 +164,21 @@ const postSlice = createSlice({
       state.serverErr = undefined;
     });
     builder.addCase(fetchPostsAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+    //fetch post Details
+    builder.addCase(fetchPostDetailsAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchPostDetailsAction.fulfilled, (state, action) => {
+      state.postDetails = action?.payload;
+      state.loading = false;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(fetchPostDetailsAction.rejected, (state, action) => {
       state.loading = false;
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;
