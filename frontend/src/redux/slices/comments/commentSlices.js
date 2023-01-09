@@ -1,6 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseUrl from "../../../utils/baseURL";
+
+//action to redirect
+// const resetCommentAction = createAction("comment/reset");
 
 //create
 export const createCommentAction = createAsyncThunk(

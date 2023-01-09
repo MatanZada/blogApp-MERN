@@ -3,16 +3,15 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { createCommentAction } from "../../redux/slices/comments/commentSlices";
-import { useParams } from "react-router-dom";
 
 //Form schema
 const formSchema = Yup.object({
   description: Yup.string().required("Description is required"),
 });
 
-const AddComment = () => {
-  const { postId } = useParams();
-  console.log(postId);
+const AddComment = (props) => {
+  const { postId } = props;
+  //   console.log(postId);
   //dispatch
   const dispatch = useDispatch();
   //select data from store
