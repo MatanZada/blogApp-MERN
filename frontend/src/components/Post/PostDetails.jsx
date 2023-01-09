@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { fetchPostDetailsAction } from "../../redux/slices/posts/postSlices";
+import {
+  fetchPostDetailsAction,
+  deletePostAction,
+} from "../../redux/slices/posts/postSlices";
 import { useDispatch, useSelector } from "react-redux";
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
@@ -96,9 +99,9 @@ const PostDetails = () => {
                         </svg>
                       </Link>
                       <button
-                        // onClick={() =>
-                        //   dispatch()
-                        // }
+                        onClick={() =>
+                          dispatch(deletePostAction(postDetails?._id))
+                        }
                         class="ml-3"
                       >
                         <svg
