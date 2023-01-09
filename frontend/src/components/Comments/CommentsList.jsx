@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-// import { deleteCommentAction } from "../../redux/slices/comments/commentSlices";
+import { deleteCommentAction } from "../../redux/slices/comments/commentSlices";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function CommentsList({ comments }) {
@@ -72,9 +72,9 @@ export default function CommentsList({ comments }) {
                             </svg>
                           </Link>
                           <button
-                            // onClick={() =>
-                            //   dispatch(deleteCommentAction(comment?._id))
-                            // }
+                            onClick={() =>
+                              dispatch(deleteCommentAction(comment?._id))
+                            }
                             class="ml-3"
                           >
                             <svg
