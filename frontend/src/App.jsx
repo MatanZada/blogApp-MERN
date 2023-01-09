@@ -12,6 +12,7 @@ import CreatePost from "./components/Post/CreatePost";
 import PostsList from "./components/Post/PostsList";
 import PostDetails from "./components/Post/PostDetails";
 import UpdatePost from "./components/Post/UpdatePost";
+import UpdateComment from "./components/Comments/UpdateComment";
 
 function App({ ...rest }) {
   //check if user is login
@@ -30,6 +31,13 @@ function App({ ...rest }) {
         <Route path="/posts" element={<PostsList />} />
         <Route path="/posts/:id" element={<PostDetails />} />
 
+        <Route
+          path="/update-comment/:id"
+          {...rest}
+          element={
+            userAuth ? <UpdateComment {...rest} /> : <Navigate to="/login" />
+          }
+        />
         <Route
           path="/create-post"
           {...rest}
