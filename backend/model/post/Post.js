@@ -48,7 +48,7 @@ const postSchema = new mongoose.Schema(
     image: {
       type: String,
       default:
-        "https://cdn.pixabay.com/photo/2022/12/12/12/58/dog-7651002_960_720.jpg",
+        "https://cdn.pixabay.com/photo/2020/10/25/09/23/seagull-5683637_960_720.jpg",
     },
   },
   {
@@ -61,6 +61,13 @@ const postSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+//populate comments
+postSchema.virtual("comments", {
+  ref: "Comment",
+  foreignField: "post",
+  localField: "_id",
+});
 
 //compile
 const Post = mongoose.model("Post", postSchema);

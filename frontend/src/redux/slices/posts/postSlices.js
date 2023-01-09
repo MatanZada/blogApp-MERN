@@ -48,7 +48,7 @@ export const createpostAction = createAsyncThunk(
 export const updatePostAction = createAsyncThunk(
   "post/updated",
   async (post, { rejectWithValue, getState, dispatch }) => {
-    console.log(post);
+    // console.log(post);
     //get user token
     const user = getState()?.users;
     const { userAuth } = user;
