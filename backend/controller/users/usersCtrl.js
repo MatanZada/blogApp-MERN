@@ -276,7 +276,7 @@ const generateVerificationTokenCtrl = expressAsyncHandler(async (req, res) => {
 const accountVerificationCtrl = expressAsyncHandler(async (req, res) => {
   const { token } = req.body;
   const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-  console.log(hashedToken);
+  // console.log(hashedToken);
 
   //find this user by verificationToken
 
