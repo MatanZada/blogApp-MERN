@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
 import AddComment from "../Comments/AddComment";
+import CommentsList from "../Comments/CommentsList";
 
 const PostDetails = () => {
   let { id } = useParams();
@@ -130,7 +131,7 @@ const PostDetails = () => {
           {userAuth ? <AddComment postId={id} /> : null}
           <div className="flex justify-center  items-center">
             {/* <CommentsList comments={post?.comments} postId={post?._id} /> */}
-            {/* <CommentsList comments={postDetails?.comments} /> */}
+            <CommentsList comments={postDetails?.comments} />
           </div>
         </section>
       )}
