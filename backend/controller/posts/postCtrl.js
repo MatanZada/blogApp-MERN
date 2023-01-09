@@ -5,6 +5,7 @@ const Post = require("../../model/post/Post");
 const { validateMongodbId } = require("../../utils/validateMongodbID");
 const User = require("../../model/user/User");
 const cloudinaryUploadImg = require("../../utils/cloudinary");
+const blockUser = require("../../utils/blockUser");
 
 const createPostCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req.user;
@@ -67,9 +68,17 @@ const createPostCtrl = expressAsyncHandler(async (req, res) => {
 
 //fetch all posts
 const fetchPostsCtrl = expressAsyncHandler(async (req, res) => {
+  // console.log(req.query);
+  const hasCategory = req.query.category;
   try {
-    const posts = await Post.find({}).populate("user");
-    res.json(posts);
+    //check if has a category
+    if (hasCategory) {
+      const posts = await Post.find({ category: hasCategory }).populate("user");
+      res.json(posts);
+    } else {
+      const posts = await Post.find({}).populate("user");
+      res.json(posts);
+    }
   } catch (error) {
     res.json(error);
   }
