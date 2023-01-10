@@ -15,6 +15,7 @@ import UpdatePost from "./components/Post/UpdatePost";
 import UpdateComment from "./components/Comments/UpdateComment";
 import Profile from "./components/Users/Profile/Profile";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
+import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
 
 function App({ ...rest }) {
   //check if user is login
@@ -34,6 +35,14 @@ function App({ ...rest }) {
         <Route path="/posts/:id" element={<PostDetails />} />
 
         <Route
+          path="/update-comment/:id"
+          {...rest}
+          element={
+            userAuth ? <UpdateComment {...rest} /> : <Navigate to="/login" />
+          }
+        />
+
+        <Route
           path="/upload-profile-photo"
           {...rest}
           element={
@@ -46,10 +55,14 @@ function App({ ...rest }) {
         />
 
         <Route
-          path="/update-comment/:id"
+          path="/update-profile"
           {...rest}
           element={
-            userAuth ? <UpdateComment {...rest} /> : <Navigate to="/login" />
+            userAuth ? (
+              <UpdateProfileForm {...rest} />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
 
