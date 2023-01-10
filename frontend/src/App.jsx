@@ -55,7 +55,7 @@ function App({ ...rest }) {
         />
 
         <Route
-          path="/update-profile"
+          path="/update-profile/:id"
           {...rest}
           element={
             userAuth ? (

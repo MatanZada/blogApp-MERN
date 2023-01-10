@@ -11,7 +11,6 @@ export default function Profile() {
   //   console.log(id);
 
   //fetch user profile
-
   useEffect(() => {
     dispatch(userProfileAction(id));
   }, [id, dispatch]);
