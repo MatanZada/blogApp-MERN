@@ -117,7 +117,7 @@ export default function Profile() {
                                   />
                                 </svg>
                                 <div className="pl-2">
-                                  {/* {profile?.viewedBy?.length}{" "} */}
+                                  {profile?.viewedBy?.length}{" "}
                                   <span className="text-indigo-400 cursor-pointer ">
                                     Number of viewers{" "}
                                     {profile?.viewedBy?.length}

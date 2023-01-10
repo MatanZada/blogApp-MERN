@@ -34,7 +34,7 @@ function App({ ...rest }) {
         <Route path="/posts/:id" element={<PostDetails />} />
 
         <Route
-          path="/upload-photo/:id"
+          path="/upload-profile-photo"
           {...rest}
           element={
             userAuth ? (
