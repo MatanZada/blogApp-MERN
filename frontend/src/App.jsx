@@ -13,6 +13,9 @@ import PostsList from "./components/Post/PostsList";
 import PostDetails from "./components/Post/PostDetails";
 import UpdatePost from "./components/Post/UpdatePost";
 import UpdateComment from "./components/Comments/UpdateComment";
+import Profile from "./components/Users/Profile/Profile";
+import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
+import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
 
 function App({ ...rest }) {
   //check if user is login
@@ -38,6 +41,37 @@ function App({ ...rest }) {
             userAuth ? <UpdateComment {...rest} /> : <Navigate to="/login" />
           }
         />
+
+        <Route
+          path="/upload-profile-photo"
+          {...rest}
+          element={
+            userAuth ? (
+              <UploadProfilePhoto {...rest} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+
+        <Route
+          path="/update-profile/:id"
+          {...rest}
+          element={
+            userAuth ? (
+              <UpdateProfileForm {...rest} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+
+        <Route
+          path="/profile/:id"
+          {...rest}
+          element={userAuth ? <Profile {...rest} /> : <Navigate to="/login" />}
+        />
+
         <Route
           path="/create-post"
           {...rest}
