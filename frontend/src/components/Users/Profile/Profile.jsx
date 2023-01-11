@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { userProfileAction } from "../../../redux/slices/users/usersSlices";
+import {
+  userProfileAction,
+  followUserAction,
+  unfollowUserAction,
+} from "../../../redux/slices/users/usersSlices";
 import DateFormatter from "../../../utils/DateFormatter";
 import LoadingComponent from "../../../utils/LoadingComponent";
 
@@ -9,11 +13,6 @@ export default function Profile() {
   const dispatch = useDispatch();
   const { id } = useParams();
   //   console.log(id);
-
-  //fetch user profile
-  useEffect(() => {
-    dispatch(userProfileAction(id));
-  }, [id, dispatch]);
 
   //user data from store
   const users = useSelector((state) => state.users);
@@ -27,6 +26,10 @@ export default function Profile() {
     userAuth,
   } = users;
 
+  //fetch user profile
+  useEffect(() => {
+    dispatch(userProfileAction(id));
+  }, [id, dispatch, followed, unFollowed]);
   //   console.log(profile);
 
   //isLogin
@@ -156,9 +159,9 @@ export default function Profile() {
                                 <div>
                                   {profile?.isFollowing ? (
                                     <button
-                                      //   onClick={() =>
-                                      //     dispatch(unfollowUserAction(id))
-                                      //   }
+                                      onClick={() =>
+                                        dispatch(unfollowUserAction(id))
+                                      }
                                       className="mr-2 inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                                     >
                                       <svg
@@ -180,9 +183,9 @@ export default function Profile() {
                                     </button>
                                   ) : (
                                     <button
-                                      //   onClick={() =>
-                                      //     dispatch(followUserAction(id))
-                                      //   }
+                                      onClick={() =>
+                                        dispatch(followUserAction(id))
+                                      }
                                       type="button"
                                       className="inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                                     >
