@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   userProfileAction,
@@ -8,9 +8,11 @@ import {
 } from "../../../redux/slices/users/usersSlices";
 import DateFormatter from "../../../utils/DateFormatter";
 import LoadingComponent from "../../../utils/LoadingComponent";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const dispatch = useDispatch();
+
   const { id } = useParams();
   //   console.log(id);
 
@@ -32,8 +34,13 @@ export default function Profile() {
   }, [id, dispatch, followed, unFollowed]);
   //   console.log(profile);
 
-  //isLogin
+  //send mail handle click
+  const navigate = useNavigate();
+  const sendMailNavigate = () => {
+    navigate("/send-mail", profile.email, profile._id);
+  };
 
+  //isLogin
   const isLoginUser = userAuth?._id === profile?._id;
   return (
     <>
@@ -243,7 +250,7 @@ export default function Profile() {
                               </>
                               {/* Send Mail */}
                               <button
-                                // onClick={sendMailNavigate}
+                                onClick={sendMailNavigate}
                                 className="inline-flex justify-center bg-indigo-900 px-4 py-2 border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                               >
                                 <svg

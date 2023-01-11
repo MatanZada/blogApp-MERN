@@ -16,6 +16,7 @@ import UpdateComment from "./components/Comments/UpdateComment";
 import Profile from "./components/Users/Profile/Profile";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
 import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
+import SendEmail from "./components/Users/Emailing/SendEmail";
 
 function App({ ...rest }) {
   //check if user is login
@@ -51,6 +52,14 @@ function App({ ...rest }) {
             ) : (
               <Navigate to="/login" />
             )
+          }
+        />
+
+        <Route
+          path="/send-mail"
+          {...rest}
+          element={
+            userAuth ? <SendEmail {...rest} /> : <Navigate to="/login" />
           }
         />
 
