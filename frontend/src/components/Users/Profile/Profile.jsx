@@ -33,8 +33,8 @@ export default function Profile() {
   //   console.log(profile);
 
   //isLogin
-
   const isLoginUser = userAuth?._id === profile?._id;
+
   return (
     <>
       <div className="min-h-screen bg-green-600 flex justify-center items-center">
@@ -78,15 +78,9 @@ export default function Profile() {
                                   {profile?.accountType}
                                 </span>
                                 {/* Display if verified or not */}
-                                {profile?.isAccountVerified ? (
-                                  <span className="inline-flex ml-2 items-center px-3 py-0.5  rounded-lg text-sm font-medium bg-green-600 text-gray-300">
-                                    Account Verified
-                                  </span>
-                                ) : (
-                                  <span className="inline-flex ml-2 items-center px-3 py-0.5  rounded-lg text-sm font-medium bg-red-600 text-gray-300">
-                                    Unverified Account
-                                  </span>
-                                )}
+                                <span className="inline-flex ml-2 items-center px-3 py-0.5  rounded-lg text-sm font-medium bg-green-600 text-gray-300">
+                                  Account Verified
+                                </span>
                               </h1>
                               <p className="m-3 text-lg">
                                 Date Joined: {""}
@@ -126,7 +120,6 @@ export default function Profile() {
                                   </span>
                                 </div>
                               </div>
-
                               {/* is login user */}
                               {/* Upload profile photo */}
                               {isLoginUser && (
