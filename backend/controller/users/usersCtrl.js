@@ -125,12 +125,11 @@ const userProfileCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 //update profile
-
 const updateUserCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req?.user;
-  //check if user id is valid
+  //block
+  blockUser(req?.user);
   validateMongodbId(_id);
-
   const user = await User.findByIdAndUpdate(
     _id,
     {
@@ -145,7 +144,6 @@ const updateUserCtrl = expressAsyncHandler(async (req, res) => {
     }
   );
   res.json(user);
-  // return res.json(myProfile);
 });
 
 //update password

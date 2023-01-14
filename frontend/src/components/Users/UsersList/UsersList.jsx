@@ -20,6 +20,7 @@ const UsersList = () => {
   return (
     <>
       <section class="py-8 bg-gray-900 min-h-screen">
+        <UsersListHeader />
         {loading ? (
           <LoadingComponent />
         ) : appErr || serverErr ? (
