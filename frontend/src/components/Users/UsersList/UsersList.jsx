@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { fetchUsersAction } from "../../../redux/slices/users/usersSlices";
+import { fetchUsersAction } from "../../../redux/slices/users/usersSlices";
 import LoadingComponent from "../../../utils/LoadingComponent";
 
 import UsersListHeader from "./UsersListHeader";
@@ -14,7 +14,7 @@ const UsersList = () => {
   const { usersList, appErr, serverErr, loading, block, unblock } = users;
   //fetch all users
   useEffect(() => {
-    // dispatch(fetchUsersAction());
+    dispatch(fetchUsersAction());
   }, [block, unblock]);
 
   return (
