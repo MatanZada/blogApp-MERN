@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import poster from "../../../img/poster.png";
 import { loginUserAction } from "../../../redux/slices/users/usersSlices";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 //Form schema
@@ -14,7 +14,6 @@ const formSchema = Yup.object({
 
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   //formik
   const formik = useFormik({
     initialValues: {
@@ -31,12 +30,9 @@ const Login = () => {
 
   //navigate
   const store = useSelector((state) => state?.users);
-  // console.log(store);
   const { userAuth, loading, serverErr, appErr } = store;
-  // if (userAuth) {
-  //   return navigate("/profile");
-  // }
-
+  // console.log(store);
+  if (userAuth) return <Navigate to={`/profile/${userAuth?._id}`} />;
   return (
     <>
       <section className="min-h-screen relative py-20 2xl:py-40 bg-gray-900 overflow-hidden">

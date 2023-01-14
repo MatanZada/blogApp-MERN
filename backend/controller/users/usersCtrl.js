@@ -52,10 +52,11 @@ const loginUserCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
-//user
+//users
 const fetchUsersCtrl = expressAsyncHandler(async (req, res) => {
+  // console.log(req.headers);
   try {
-    const users = await User.find({});
+    const users = await User.find({}).populate("posts");
     res.json(users);
   } catch (error) {
     res.json(error);
@@ -97,23 +98,38 @@ const userProfileCtrl = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
   //check if user id is valid
   validateMongodbId(id);
+  //1.Find the login user
+  //2. Check this particular if the login user exists in the array of viewedBy
+
+  //Get the login user
+  const loginUserId = req?.user?._id?.toString();
+  console.log(typeof loginUserId);
   try {
-    const myProfile = await User.findById(id).populate("posts");
-    res.json(myProfile);
-    // return res.json(myProfile);
-  } catch (err) {
-    return res.json(err);
-    // return res.json(err);
+    const myProfile = await User.findById(id)
+      .populate("posts")
+      .populate("viewedBy");
+    const alreadyViewed = myProfile?.viewedBy?.find((user) => {
+      console.log(user);
+      return user?._id?.toString() === loginUserId;
+    });
+    if (alreadyViewed) {
+      res.json(myProfile);
+    } else {
+      const profile = await User.findByIdAndUpdate(myProfile?._id, {
+        $push: { viewedBy: loginUserId },
+      });
+      res.json(profile);
+    }
+  } catch (error) {
+    res.json(error);
   }
 });
-
 //update profile
-
 const updateUserCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req?.user;
-  //check if user id is valid
+  //block
+  blockUser(req?.user);
   validateMongodbId(_id);
-
   const user = await User.findByIdAndUpdate(
     _id,
     {
@@ -128,7 +144,6 @@ const updateUserCtrl = expressAsyncHandler(async (req, res) => {
     }
   );
   res.json(user);
-  // return res.json(myProfile);
 });
 
 //update password
