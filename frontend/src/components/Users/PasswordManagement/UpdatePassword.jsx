@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-// import { updatePasswordAction } from "../../../redux/slices/users/usersSlices";
+import { updatePasswordAction } from "../../../redux/slices/users/usersSlices";
 
 //Form schema
 const formSchema = Yup.object({
@@ -18,7 +18,8 @@ const UpdatePassword = () => {
     },
     onSubmit: (values) => {
       //dispath the action
-      console.log(values);
+      //console.log(values);
+      dispatch(updatePasswordAction(values?.password));
     },
     validationSchema: formSchema,
   });
