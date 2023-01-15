@@ -49,11 +49,21 @@ function App({ ...rest }) {
           path="/users"
           {...rest}
           element={
-            userAuth ? <UsersList {...rest} /> : <Navigate to="/login" />
+            userAuth?.isAdmin ? (
+              <UsersList {...rest} />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
 
-        <Route path="/update-password" element={<UpdatePassword />} />
+        <Route
+          path="/update-password"
+          {...rest}
+          element={
+            userAuth ? <UpdatePassword {...rest} /> : <Navigate to="/login" />
+          }
+        />
 
         <Route
           path="/password-reset-token"
@@ -111,7 +121,11 @@ function App({ ...rest }) {
           path="/add-category"
           {...rest}
           element={
-            userAuth ? <AddNewCategory {...rest} /> : <Navigate to="/login" />
+            userAuth?.isAdmin ? (
+              <AddNewCategory {...rest} />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
 
@@ -119,7 +133,11 @@ function App({ ...rest }) {
           path="/category-list"
           {...rest}
           element={
-            userAuth ? <CategoryList {...rest} /> : <Navigate to="/login" />
+            userAuth?.isAdmin ? (
+              <CategoryList {...rest} />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
 
@@ -127,7 +145,11 @@ function App({ ...rest }) {
           path="/update-category/:id"
           {...rest}
           element={
-            userAuth ? <UpdateCategory {...rest} /> : <Navigate to="/login" />
+            userAuth?.isAdmin ? (
+              <UpdateCategory {...rest} />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
       </Routes>
