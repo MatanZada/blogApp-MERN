@@ -356,8 +356,33 @@ export const updatePasswordAction = createAsyncThunk(
   }
 );
 
-//slices
+//Password reset token generator
+export const passwordResetTokenAction = createAsyncThunk(
+  "password/token",
+  async (email, { rejectWithValue, getState, dispatch }) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    //http call
+    try {
+      const { data } = await axios.post(
+        `${baseUrl}/api/users/forget-password-token`,
+        { email },
+        config
+      );
+      return data;
+    } catch (error) {
+      if (!error.response) {
+        throw error;
+      }
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 
+//slices
 const usersSlices = createSlice({
   name: "users",
   initialState: {
@@ -598,6 +623,23 @@ const usersSlices = createSlice({
     });
     builder.addCase(updatePasswordAction.rejected, (state, action) => {
       // console.log(action.payload);
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverErr = action?.error?.message;
+    });
+    //Password reset token generator
+    builder.addCase(passwordResetTokenAction.pending, (state, action) => {
+      state.loading = true;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(passwordResetTokenAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.passwordToken = action?.payload;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(passwordResetTokenAction.rejected, (state, action) => {
       state.loading = false;
       state.appErr = action?.payload?.message;
       state.serverErr = action?.error?.message;

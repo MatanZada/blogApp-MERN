@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LockClosedIcon } from "@heroicons/react/24/solid";
+import { passwordResetTokenAction } from "../../../redux/slices/users/usersSlices";
 
 //Form schema
 const formSchema = Yup.object({
@@ -18,7 +19,8 @@ const ResetPasswordForm = () => {
     },
     onSubmit: (values) => {
       //dispath the action
-      console.log(values);
+      // console.log(values);
+      dispatch(passwordResetTokenAction(values?.email));
     },
     validationSchema: formSchema,
   });
@@ -26,6 +28,7 @@ const ResetPasswordForm = () => {
   //select data from store
   const users = useSelector((state) => state?.users);
   const { passwordToken, loading, appErr, serverErr } = users;
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
