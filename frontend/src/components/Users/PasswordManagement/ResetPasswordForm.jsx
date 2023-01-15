@@ -19,7 +19,6 @@ const ResetPasswordForm = () => {
     },
     onSubmit: (values) => {
       //dispath the action
-      // console.log(values);
       dispatch(passwordResetTokenAction(values?.email));
     },
     validationSchema: formSchema,
@@ -28,7 +27,6 @@ const ResetPasswordForm = () => {
   //select data from store
   const users = useSelector((state) => state?.users);
   const { passwordToken, loading, appErr, serverErr } = users;
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">

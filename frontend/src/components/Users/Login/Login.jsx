@@ -27,9 +27,10 @@ const Login = () => {
     validationSchema: formSchema,
   });
 
-  //Navigate
   const store = useSelector((state) => state?.users);
   const { userAuth, loading, serverErr, appErr } = store;
+
+  //Navigate
   if (userAuth) return <Navigate to={`/profile/${userAuth?._id}`} />;
   return (
     <>

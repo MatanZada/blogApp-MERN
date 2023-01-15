@@ -53,13 +53,7 @@ function App({ ...rest }) {
           }
         />
 
-        <Route
-          path="/update-password"
-          {...rest}
-          element={
-            userAuth ? <UpdatePassword {...rest} /> : <Navigate to="/login" />
-          }
-        />
+        <Route path="/update-password" element={<UpdatePassword />} />
 
         <Route
           path="/password-reset-token"
