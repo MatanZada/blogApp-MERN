@@ -1,10 +1,10 @@
 import React from "react";
 import { useFormik } from "formik";
+import { Navigate, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import poster from "../../../img/poster.png";
 import { loginUserAction } from "../../../redux/slices/users/usersSlices";
-import { Navigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
 //Form schema
 const formSchema = Yup.object({
@@ -23,15 +23,14 @@ const Login = () => {
     onSubmit: (values) => {
       //dispath the action
       dispatch(loginUserAction(values));
-      // console.log(values);
     },
     validationSchema: formSchema,
   });
 
-  //navigate
   const store = useSelector((state) => state?.users);
   const { userAuth, loading, serverErr, appErr } = store;
-  // console.log(store);
+
+  //Navigate
   if (userAuth) return <Navigate to={`/profile/${userAuth?._id}`} />;
   return (
     <>
@@ -145,6 +144,14 @@ const Login = () => {
                       </button>
                     )}
                   </form>
+                  <div className="p-2">
+                    <Link
+                      to="/password-reset-token"
+                      className="font-medium text-indigo-600 hover:text-indigo-500"
+                    >
+                      Forget Password ?
+                    </Link>
+                  </div>
                 </div>
               </div>
               <div className="w-full lg:w-3/5 px-4 mb-16 lg:mb-0 order-first lg:order-last">

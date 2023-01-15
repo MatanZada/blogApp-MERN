@@ -17,6 +17,8 @@ import Profile from "./components/Users/Profile/Profile";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
 import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
 import UsersList from "./components/Users/UsersList/UsersList";
+import UpdatePassword from "./components/Users/PasswordManagement/UpdatePassword";
+import ResetPasswordForm from "./components/Users/PasswordManagement/ResetPasswordForm";
 
 function App({ ...rest }) {
   //check if user is login
@@ -47,8 +49,26 @@ function App({ ...rest }) {
           path="/users"
           {...rest}
           element={
-            userAuth ? <UsersList {...rest} /> : <Navigate to="/login" />
+            userAuth?.isAdmin ? (
+              <UsersList {...rest} />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
+        />
+
+        <Route
+          path="/update-password"
+          {...rest}
+          element={
+            userAuth ? <UpdatePassword {...rest} /> : <Navigate to="/login" />
+          }
+        />
+
+        <Route
+          path="/password-reset-token"
+          {...rest}
+          element={<ResetPasswordForm {...rest} />}
         />
 
         <Route
@@ -101,7 +121,11 @@ function App({ ...rest }) {
           path="/add-category"
           {...rest}
           element={
-            userAuth ? <AddNewCategory {...rest} /> : <Navigate to="/login" />
+            userAuth?.isAdmin ? (
+              <AddNewCategory {...rest} />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
 
@@ -109,7 +133,11 @@ function App({ ...rest }) {
           path="/category-list"
           {...rest}
           element={
-            userAuth ? <CategoryList {...rest} /> : <Navigate to="/login" />
+            userAuth?.isAdmin ? (
+              <CategoryList {...rest} />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
 
@@ -117,7 +145,11 @@ function App({ ...rest }) {
           path="/update-category/:id"
           {...rest}
           element={
-            userAuth ? <UpdateCategory {...rest} /> : <Navigate to="/login" />
+            userAuth?.isAdmin ? (
+              <UpdateCategory {...rest} />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
       </Routes>
